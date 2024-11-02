@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,10 +20,9 @@
             text-align: center;
             background-color: white;
             padding: 20px;
-            border-radius: 15px;
+            border-radius: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 500px;
+            width: 100%;
             margin: 20px;
             box-sizing: border-box;
         }
@@ -35,7 +35,7 @@
 
         textarea {
             width: 100%;
-            height: 30vh; /* 30% of viewport height */
+            height: 30vh;
             margin: 10px 0;
             padding: 10px;
             border-radius: 8px;
@@ -78,11 +78,13 @@
             }
 
             textarea {
-                height: 20vh; /* 20% of viewport height */
+                height: 20vh;
+                /* 20% of viewport height */
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>❤️ Jiyaa ❤️</h1>
@@ -141,13 +143,25 @@
                 formattedText = formattedText.replace(regex, value);
             }
 
-            // Replace numbers with words and capitalize first letter of each word
-            formattedText = formattedText.replace(/\b\d+\b/g, match => {
-                return numberToWords(parseInt(match));
+            // Handle cases where specific words are followed directly by numbers
+            formattedText = formattedText.replace(/(equal to)(\d+)/gi, (match, word, number) => {
+                return word + ' ' + numberToWords(parseInt(number)); // Add a space between the word and number words
+            });
+
+            // Handle cases where letters are followed directly by numbers
+            formattedText = formattedText.replace(/([a-zA-Z]+)(\d+)/g, (match, letters, number) => {
+                return letters.charAt(0).toUpperCase() + letters.slice(1) + ' ' + numberToWords(parseInt(number));
+            });
+
+            // Replace numbers with words and capitalize the following letter
+            formattedText = formattedText.replace(/(\d+)(\w*)/g, (match, number, followingText) => {
+                let numberWords = numberToWords(parseInt(number));
+                let capitalizedFollowingText = followingText.charAt(0).toUpperCase() + followingText.slice(1);
+                return numberWords + ' ' + capitalizedFollowingText; // Added a space between the number words and the following text
             });
 
             // Display the formatted text
-            document.getElementById('outputText').value = formattedText;
+            document.getElementById('outputText').value = formattedText.trim();
         }
 
         function numberToWords(num) {
@@ -157,14 +171,8 @@
             const units = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
             const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
             const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
-            const thousands = 'Thousand';
 
             let word = '';
-
-            if (num >= 1000) {
-                word += numberToWords(Math.floor(num / 1000)) + ' ' + thousands + ' ';
-                num %= 1000;
-            }
 
             if (num >= 100) {
                 word += units[Math.floor(num / 100)] + ' Hundred ';
@@ -185,6 +193,7 @@
             return word.trim();
         }
 
+
         function copyText() {
             let outputText = document.getElementById('outputText');
             outputText.select();
@@ -198,4 +207,5 @@
         }
     </script>
 </body>
+
 </html>
