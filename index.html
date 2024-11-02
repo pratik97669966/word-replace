@@ -89,7 +89,7 @@
         <textarea id="inputText" placeholder="Paste your text here..."></textarea>
         <div class="buttons">
             <button onclick="formatText()">Format Text</button>
-            <button onclick="selectAllText('inputText')">Select All</button>
+            <button onclick="clearAll()">Clear All</button>
         </div>
         <textarea id="outputText" readonly></textarea>
         <div class="buttons">
@@ -190,14 +190,11 @@
             outputText.select();
             outputText.setSelectionRange(0, 99999); // For mobile devices
             document.execCommand("copy");
-           
         }
 
-        function selectAllText(textAreaId) {
-            let textArea = document.getElementById(textAreaId);
-            textArea.select();
-            textArea.setSelectionRange(0, 99999); // For mobile devices
-           
+        function clearAll() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('outputText').value = '';
         }
     </script>
 </body>
