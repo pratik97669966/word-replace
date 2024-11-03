@@ -116,7 +116,7 @@
                 "Divided By": "/",
                 "Into": "*",
                 "Multiply": "*",
-                "By": "/",
+                "\\bBy\\b": "/",
                 "Is Equals To": "=",
                 "Is Equal To": "=",
                 "Equals To": "=",
@@ -159,7 +159,8 @@
                 let capitalizedFollowingText = followingText.charAt(0).toUpperCase() + followingText.slice(1);
                 return numberWords + ' ' + capitalizedFollowingText; // Added a space between the number words and the following text
             });
-
+            // Capitalize the first letter of each word
+            inputText = inputText.replace(/\b\w/g, char => char.toUpperCase());
             // Display the formatted text
             document.getElementById('outputText').value = formattedText.trim();
         }
@@ -192,7 +193,6 @@
 
             return word.trim();
         }
-
 
         function copyText() {
             let outputText = document.getElementById('outputText');
